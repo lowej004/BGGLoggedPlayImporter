@@ -12,6 +12,7 @@ Installation Instructions:
 Walkthrough Instructions:
 1) A new menu option will appear titled 'BGG Logged Play Import'
 2) Select 'Run Import' from the new menu
-3) The first time you run this you will need to walk through some authorization to allow this to run
+3a) The first time you run this you will need to walk through some authorization to allow this to run
+3b) Any time after the first time you open this option your previous options will be remembered
 4) A dialog will appear, select the relevant options and click 'Import'
 5) The dialog will close and the logged play data will be imported 

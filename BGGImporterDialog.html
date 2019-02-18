@@ -1,0 +1,57 @@
+<table style='font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;'>
+  <tr Title="BGG Username">
+    <td>Username:</td>
+    <td><input type="text" name="username" id="username" value="<?= usernameVar ?>" width="169px" ></td>
+  </tr>
+  <tr Title="First date to import plays from">
+    <td>Start Date:</td>
+    <td><input type="date" name="minDate" id="minDate" value="<?= minDateVar ?>" style="width:169px" ></td>
+  </tr>
+  <tr Title="Last date to import plays from">
+    <td>End Date:</td>
+    <td><input type="date" name="maxDate" id="maxDate" value="<?= maxDateVar ?>" style="width:169px" ></td>
+  </tr>
+  <tr Title="Include a column to show the year the game was published">
+    <td>Include Game Year:</td>
+    <td><input type="checkbox" name="incGameYear" id="incGameYear" value="1" <?= incGameYearVar ?> ></td>
+  </tr>
+  <tr Title="Include a column to show the games current BGG rank">
+    <td>Include Game Rank:</td>
+    <td><input type="checkbox" name="incGameRank" id="incGameRank" value="1" <?= incGameRankVar ?> ></td>
+  </tr>
+  <tr  Title="Include a column to show whether the game is in the users BGG collection">
+    <td>Include In Collection:</td>
+    <td><input type="checkbox" name="incInCollection" id="incInCollection" value="1" <?= incInCollectionVar ?> ></td>
+  </tr>
+  <tr  Title="Include a column to show whether the game is new to the current player based on the 'New' field against the player">
+    <td>Include Whether New Game:</td>
+    <td><input type="checkbox" name="incNewGame" id="incNewGame" value="1" <?= incNewGameVar ?> ></td>
+  </tr>
+  <tr Title="Include columns to list the players in the game - including the number of players">
+    <td>Include Players:</td>
+    <td><input type="checkbox" name="incPlayers" id="incPlayers" value="1" <?= incPlayersVar ?> ></td>
+  </tr>
+  <tr Title="Include a column to show any comments written against the play">
+    <td>Include Comments:</td>
+    <td><input type="checkbox" name="incComments" id="incComments" value="1" <?= incCommentsVar ?> ></td>
+  </tr>
+</table>
+
+<input type="button" value="Import" onclick="ImportPlays()" />
+
+<script>
+  function ImportPlays(){
+    var username = document.getElementById("username").value;
+    var minDate = document.getElementById("minDate").value;
+    var maxDate = document.getElementById("maxDate").value;
+    var includeGameYear = document.getElementById("incGameYear").checked;
+    var includeGameRank = document.getElementById("incGameRank").checked;
+    var includeInCollection = document.getElementById("incInCollection").checked;
+    var includeNewGame = document.getElementById("incNewGame").checked;
+    var includePlayers = document.getElementById("incPlayers").checked;
+    var includeComments = document.getElementById("incComments").checked;
+  
+    google.script.run.ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includeComments); 
+    google.script.host.close();
+  }
+</script>

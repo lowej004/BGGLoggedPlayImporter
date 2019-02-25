@@ -21,9 +21,9 @@ function OpenBGGImportDialog(){
   html.incCommentsVar = (((userProperties.getProperty('BGGIncComments') != null) && (userProperties.getProperty('BGGIncComments') == 'true')) ? 'checked' : '');
   
   var htmlOutput = html.evaluate()
-      .setWidth(410).setHeight(270);
+      .setWidth(410).setHeight(430);
   SpreadsheetApp.getUi()
-      .showModalDialog(htmlOutput, 'BGG Play Stats Import');
+      .showModalDialog(htmlOutput, 'BGG Play Stats Import')
 }
 
 function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includeComments) {

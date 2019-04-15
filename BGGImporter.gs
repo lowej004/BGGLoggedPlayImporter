@@ -46,9 +46,19 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
   });
   
   var collectionUrl = 'https://www.boardgamegeek.com/xmlapi2/collection?brief=1&own=1&username=' + username
+  
   var collectionXml = UrlFetchApp.fetch(collectionUrl).getContentText();
   var collectionDoc = XmlService.parse(collectionXml);
   var collectionRoot = collectionDoc.getRootElement();
+  
+  while (collectionRoot.getName() != "items")
+  {
+    Utilities.sleep(500);
+    collectionXml = UrlFetchApp.fetch(collectionUrl).getContentText();
+    collectionDoc = XmlService.parse(collectionXml);
+    collectionRoot = collectionDoc.getRootElement();
+  }
+  
   var collectionItems = collectionRoot.getChildren();
   
   // First call to the API to establish how many plays there are, and therefore the number of pages
@@ -240,23 +250,30 @@ function getIsInCollection(collectionItems, gameId)
 
 function getGameYearAndRank(gameId)
 {
-  var url = 'http://www.boardgamegeek.com/xmlapi2/thing?stats=1&id=' + gameId;
-  var xml = UrlFetchApp.fetch(url).getContentText();
-  var document = XmlService.parse(xml);
-  var root = document.getRootElement();
-  var entry = root.getChild('item');
+  try
+  {
+    var url = 'http://www.boardgamegeek.com/xmlapi2/thing?stats=1&id=' + gameId;
+    var xml = UrlFetchApp.fetch(url).getContentText();
+    var document = XmlService.parse(xml);
+    var root = document.getRootElement();
+    var entry = root.getChild('item');
+      
+    var year = entry.getChild('yearpublished').getAttribute('value').getValue();
     
-  var year = entry.getChild('yearpublished').getAttribute('value').getValue();
-  
-  var ranks = entry.getChild('statistics').getChild('ratings').getChild('ranks').getChildren('rank');
-  var rank = '';
-  for (var i = 0; i < ranks.length; i++) {    
-    var thisRank = ranks[i];
-    if (thisRank.getAttribute('id').getValue() == '1')
-    {
-      rank = thisRank.getAttribute('value').getValue();
+    var ranks = entry.getChild('statistics').getChild('ratings').getChild('ranks').getChildren('rank');
+    var rank = '';
+    for (var i = 0; i < ranks.length; i++) {    
+      var thisRank = ranks[i];
+      if (thisRank.getAttribute('id').getValue() == '1')
+      {
+        rank = thisRank.getAttribute('value').getValue();
+      }
     }
-  }
   
-  return [year, rank];
+    return [year, rank];
+  }
+  catch (e)
+  {
+    return ['0', '0']
+  }
 }

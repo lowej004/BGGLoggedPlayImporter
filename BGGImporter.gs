@@ -194,7 +194,7 @@ function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollec
 }
 
 function getWinner(players){
-  var winner;
+  var winner = '';
   if ((players[0] != null) && (players[0].getAttribute('win').getValue() == '1')){
     winner = players[0].getAttribute('name').getValue();
   } else if ((players[1] != null) && (players[1].getAttribute('win').getValue() == '1')){

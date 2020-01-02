@@ -133,20 +133,10 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
           player8 = ((players[7] != null) ? players[7].getAttribute('name').getValue() : '');
         
           winner = getWinner(players);
-          
-        } else {
-          numberOfPlayers = '';
-          player1 = '';
-          player2 = '';
-          player3 = '';
-          player4 = '';
-          player5 = '';
-          player6 = '';
-          player7 = '';
-          player8 = '';
-          winner = '';
-        }
-        thisRow.push(numberOfPlayers, player1, player2, player3, player4, player5, player6, player7, player8, winner);
+
+          thisRow.push(numberOfPlayers, player1, player2, player3, player4, player5, player6, player7, player8, winner);
+        } 
+        
       }
       else
       {

@@ -32,6 +32,10 @@
     <td>Include Players:</td>
     <td><input type="checkbox" name="incPlayers" id="incPlayers" value="1" <?= incPlayersVar ?> ></td>
   </tr>
+  <tr Title="Include columns to list the player scores and ratings in the game">
+    <td>Include Player Scores And Ratings:</td>
+    <td><input type="checkbox" name="incPlayerScoresAndRatings" id="incPlayerScoresAndRatings" value="1" <?= incPlayerScoresAndRatingsVar ?> ></td>
+  </tr>
   <tr Title="Include a column to show any comments written against the play">
     <td>Include Comments:</td>
     <td><input type="checkbox" name="incComments" id="incComments" value="1" <?= incCommentsVar ?> ></td>
@@ -50,9 +54,10 @@
     var includeInCollection = document.getElementById("incInCollection").checked;
     var includeNewGame = document.getElementById("incNewGame").checked;
     var includePlayers = document.getElementById("incPlayers").checked;
+    var includePlayerScoresAndRatings = document.getElementById("incPlayerScoresAndRatings").checked;
     var includeComments = document.getElementById("incComments").checked;
   
-    google.script.run.ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includeComments); 
+    google.script.run.ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments); 
     google.script.host.close();
   }
 </script>

@@ -205,8 +205,12 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
                 if (includePlayerScoresAndRatings) {
                     thisRow.push(numberOfPlayers, player1, player1Score, player1Rating, player2, player2Score, player2Rating, player3, player3Score, player3Rating, player4, player4Score, player4Rating);
                     thisRow.push(player5, player5Score, player5Rating, player6, player6Score, player6Rating, player7, player7Score, player7Rating, player8, player8Score, player8Rating, winner);
-                } else {
+                } else if (includePlayers) {
                     thisRow.push(numberOfPlayers, player1, player2, player3, player4, player5, player6, player7, player8, winner);
+                }
+                else
+                {
+                    // do nothing
                 }
             }
             else

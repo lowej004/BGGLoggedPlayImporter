@@ -98,7 +98,7 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
             timesPlayed = entries[i].getAttribute('quantity').getValue();
             item = entries[i].getChildren('item')[0];
             game = item.getAttribute('name').getValue();
-            playtime = item.getAttribute('playtime').getValue();
+            playtime = item.getAttribute('playingtime').getValue();
 
             var thisRow = [date, game, location,timesPlayed];
 

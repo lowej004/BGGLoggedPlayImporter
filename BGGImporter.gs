@@ -76,7 +76,7 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
     var totalNumberOfPlays = 0 + root.getAttribute('total').getValue();
     var totalNumberOfPages = Math.ceil(totalNumberOfPlays / 100);
 
-    writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments);
+    writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments, includePlaytime);
 
     var entries, item, players;
     var date, game, location,timesPlayed, isInCollection, isNew, numberOfPlayers, player1, player1Score, player1Rating, player2, player2Score, player2Rating, player3, player3Score, player3Rating;
@@ -98,18 +98,20 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
             timesPlayed = entries[i].getAttribute('quantity').getValue();
             item = entries[i].getChildren('item')[0];
             game = item.getAttribute('name').getValue();
-            playtime = item.getAttribute('playingtime').getValue();
 
             var thisRow = [date, game, location,timesPlayed];
 
             var gameId = item.getAttribute('objectid').getValue();
-            if (includeGameYear || includeGameRank) {
+            if (includeGameYear || includeGameRank || includePlaytime) {
                 var gameYearAndRank = getGameYearAndRank(gameId);
                 if (includeGameYear){
                     thisRow.push(gameYearAndRank[0]);
                 }
                 if (includeGameRank){
                     thisRow.push(gameYearAndRank[1])
+                }
+                if (includePlaytime){
+                    thisRow.push(gameYearAndRank[2])
                 }
             }
 
@@ -232,10 +234,6 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
                 thisRow.push(comments);
             }
 
-            if(includePlaytime){
-                thisRow.push(playtime);
-            }
-            
             sheet.appendRow(thisRow);
         }
     }
@@ -249,6 +247,9 @@ function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollec
     }
     if (includeGameRank) {
         row.push('Current BGG Rank');
+    }
+    if (includePlaytime){
+        row.push('Playtime');
     }
     if (includeInCollection) {
         row.push('Is In Collection');
@@ -267,9 +268,6 @@ function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollec
     }
     if (includeComments){
         row.push('Comments');
-    }
-    if (includePlaytime){
-        row.push('Playtime');
     }
 
     sheet.appendRow(row);
@@ -333,6 +331,8 @@ function getGameYearAndRank(gameId) {
 
         var year = entry.getChild('yearpublished').getAttribute('value').getValue();
 
+        var playtime = entry.getChild('playingtime').getAttribute('value').getValue();
+      
         var ranks = entry.getChild('statistics').getChild('ratings').getChild('ranks').getChildren('rank');
         var rank = '';
 
@@ -344,7 +344,7 @@ function getGameYearAndRank(gameId) {
             }
         }
 
-        return [year, rank];
+        return [year, rank, playtime];
     } catch (e) {
         return ['0', '0']
     }

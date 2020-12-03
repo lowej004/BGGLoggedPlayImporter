@@ -40,6 +40,10 @@
     <td>Include Comments:</td>
     <td><input type="checkbox" name="incComments" id="incComments" value="1" <?= incCommentsVar ?> ></td>
   </tr>
+  <tr Title="Include a column to show playtime">
+    <td>Include Playtime:</td>
+    <td><input type="checkbox" name="incPlaytime" id="incPlaytime" value="1" <?= incPlaytimeVar ?> ></td>
+  </tr>
 </table>
 
 <input type="button" value="Import" onclick="ImportPlays()" />
@@ -56,8 +60,9 @@
     var includePlayers = document.getElementById("incPlayers").checked;
     var includePlayerScoresAndRatings = document.getElementById("incPlayerScoresAndRatings").checked;
     var includeComments = document.getElementById("incComments").checked;
+    var includePlaytime = document.getElementById("incPlaytime").checked;
   
-    google.script.run.ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments); 
+    google.script.run.ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments, includePlaytime); 
     google.script.host.close();
   }
 </script>

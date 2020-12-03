@@ -20,6 +20,8 @@ function OpenBGGImportDialog(){
     html.incPlayersVar = (((userProperties.getProperty('BGGIncPlayers') != null) && (userProperties.getProperty('BGGIncPlayers') == 'true')) ? 'checked' : '');
     html.incPlayerScoresAndRatingsVar = (((userProperties.getProperty('BGGIncPlayerScoresAndRatings') != null) && (userProperties.getProperty('BGGIncPlayerScoresAndRatings') == 'true')) ? 'checked' : '');
     html.incCommentsVar = (((userProperties.getProperty('BGGIncComments') != null) && (userProperties.getProperty('BGGIncComments') == 'true')) ? 'checked' : '');
+    html.incPlaytimeVar = (((userProperties.getProperty('BGGIncPlaytime') != null) && (userProperties.getProperty('BGGIncPlaytime') == 'true')) ? 'checked' : '');
+
 
     var htmlOutput = html.evaluate()
         .setWidth(410).setHeight(430);
@@ -27,7 +29,7 @@ function OpenBGGImportDialog(){
         .showModalDialog(htmlOutput, 'BGG Play Stats Import')
 }
 
-function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments) {
+function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments, includePlaytime) {
     // Delete previous data from spreadsheet
     var sheet = SpreadsheetApp.getActiveSheet();
     sheet.clearContents();
@@ -44,7 +46,8 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
         'BGGNewGame': includeNewGame,
         'BGGIncPlayers':includePlayers,
         'BGGIncPlayerScoresAndRatings':includePlayerScoresAndRatings,
-        'BGGIncComments':includeComments
+        'BGGIncComments':includeComments,
+        'BGGIncPlaytime':includePlaytime
     });
 
     var collectionUrl = 'https://www.boardgamegeek.com/xmlapi2/collection?brief=1&own=1&username=' + username
@@ -78,7 +81,8 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
     var entries, item, players;
     var date, game, location,timesPlayed, isInCollection, isNew, numberOfPlayers, player1, player1Score, player1Rating, player2, player2Score, player2Rating, player3, player3Score, player3Rating;
     var player4, player4Score, player4Rating, player5, player5Score, player5Rating, player6,  player6Score, player6Rating, player7, player7Score, player7Rating, player8, player8Score, player8Rating, winner, comments;
-
+    var playtime;
+    
     // Loop through the pages
     for (var h = 1; h <= totalNumberOfPages; h++) {
         url = 'http://www.boardgamegeek.com/xmlapi2/plays?username=' + username + '&mindate=' + minDate + '&maxdate=' + maxDate + '&page=' + h;
@@ -94,6 +98,7 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
             timesPlayed = entries[i].getAttribute('quantity').getValue();
             item = entries[i].getChildren('item')[0];
             game = item.getAttribute('name').getValue();
+            playtime = item.getAttribute('playtime').getValue();
 
             var thisRow = [date, game, location,timesPlayed];
 
@@ -227,13 +232,17 @@ function ImportBGGPlays(username, minDate, maxDate, includeGameYear, includeGame
                 thisRow.push(comments);
             }
 
+            if(includePlaytime){
+                thisRow.push(playtime);
+            }
+            
             sheet.appendRow(thisRow);
         }
     }
-    sheet.autoResizeColumns(1, 20);
+    sheet.autoResizeColumns(1, 21);
 }
 
-function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments) {
+function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollection, includeNewGame, includePlayers, includePlayerScoresAndRatings, includeComments, includePlaytime) {
     var row = ['Date', 'Game', 'Location', 'Times Played'];
     if (includeGameYear){
         row.push('Year Published');
@@ -258,6 +267,9 @@ function writeHeaderRow(sheet, includeGameYear, includeGameRank, includeInCollec
     }
     if (includeComments){
         row.push('Comments');
+    }
+    if (includePlaytime){
+        row.push('Playtime');
     }
 
     sheet.appendRow(row);

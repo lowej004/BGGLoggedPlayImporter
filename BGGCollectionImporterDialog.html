@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<table style='font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;'>
+  <tr Title="BGG Username">
+    <td>Username:</td>
+    <td><input type="text" name="username" id="username" value="<?= usernameVar ?>" width="169px" Title="BGG Username" ></td>
+  </tr>
+  <tr Title="Include expansions in the collection import">
+    <td>Include Expansions:</td>
+    <td><input type="checkbox" name="incExpansions" id="incExpansions" value="1" Title="Include expansions in the collection import" <?= incExpansionsVar ?> ></td>
+  </tr>
+</table>
+
+<input id="submitButton" type="button" value="Import" onclick="ImportPlays()" />
+<br/>
+<a><img src="https://drive.google.com/thumbnail?id=1unpb690BONNJB5HXtJEHfO4Raz7I-5JO" onClick="window.open('https://www.boardgamegeek.com', '_blank')" alt="Powered By BGG"></a>
+
+<script>
+  function ImportPlays(){
+    document.getElementById('submitButton').disabled=true;
+    var username = document.getElementById("username").value;
+    var incExpansions = document.getElementById("incExpansions").checked;
+  
+    google.script.run.ImportBGGCollection(username, incExpansions); 
+    // This has been commented out because auto-closing the dialog was occasionally stopping the script from running
+    //google.script.host.close();
+  }
+</script>
